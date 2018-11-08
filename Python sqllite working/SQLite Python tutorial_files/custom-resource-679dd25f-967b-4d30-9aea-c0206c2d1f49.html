@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- saved from url=(0132)https://57bca0c7bd8d3e0ab07a5b94.bannerflow.com/resources/custom-resource-679dd25f-967b-4d30-9aea-c0206c2d1f49?cb=636081002195854950 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>Widget asset</title>  <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <style type="text/css"> html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; image-rendering: optimizeQuality;}/* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display: block;}body, html{background-color: transparent; overflow: hidden;}html{height: 100%; width: 100%;}body{line-height: 1; height: 100%; width: 100%;}ol, ul{list-style: none;}blockquote, q{quotes: none;}blockquote:before, blockquote:after, q:before, q:after{content: ''; content: none;}table{border-collapse: collapse; border-spacing: 0;}</style><script type="text/javascript" src="./widget.min.js.download"></script><style>div {
+    width:100%;
+    height:100%;
+    position:absolute;
+    display:table;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #555;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    box-sizing: border-box;
+}
+span {
+    display:table-cell;
+    vertical-align:middle;
+    
+    width:100%;
+    height:100%:
+}</style></head><body><div>
+  <span>Sizmek Variable</span>
+</div><script>var variables = {
+    designnote: 'NULL',
+    copynote: 	'NULL',
+    //tier: 		'NULL',
+    version: 	'NULL',
+    //price: 		'NULL',
+    currency: 	'NULL',
+    period:		'NULL',
+    //country: 	'NULL',
+    //language:	'NULL',
+    cta: 		'NULL',
+    noun: 'NULL'
+};
+var noun = "";
+
+
+BannerFlow.addEventListener(BannerFlow.INIT, function () {
+    passVariable();
+});
+
+BannerFlow.addEventListener(BannerFlow.FEED_UPDATED, function () {
+   // var price = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceText'; });
+    //var country = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceCountry'; });
+    //var language = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceLanguage'; });
+    //var tier = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceTier'; });
+    
+    var currency = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceCurrency'; });
+    var value = BannerFlow.feed.filter(function(f) { return f.name == 'SalePriceValue'; });
+    var period = BannerFlow.feed.filter(function(f) { return f.name == 'SalePricePeriod'; });
+    
+    //if (price.length > 0) variables.price = price[0].values[0].replace(/[^\d.-]/g, '');
+    //if (country.length > 0) variables.country = country[0].values[0];
+    //if (language.length > 0) variables.language = language[0].values[0];
+    //if (tier.length > 0) variables.tier = tier[0].values[0];
+    
+    if (value.length > 0) variables.value = value[0].values[0];
+    if (currency.length > 0) variables.currency = currency[0].values[0];
+    if (period.length > 0) variables.period = period[0].values[0];
+});
+
+BannerFlow.addEventListener(BannerFlow.SETTINGS_CHANGED, function () {
+    variables.designnote = BannerFlow.settings.designNote;
+});
+
+BannerFlow.addEventListener(BannerFlow.TEXT_CHANGED, function () {
+    var lines = BannerFlow.text.replace(/<div>/gi, '').split('</div>');
+    for (var i=0;i<lines.length;i++) {
+        var pos = lines[i].indexOf('-');
+        if (pos > -1) {
+            var key = lines[i].substring(0, pos).trim().replace('_', '').toLowerCase();
+            var val = lines[i].substring(pos+1).trim();
+            if (variables.hasOwnProperty(key))
+                variables[key] = val;
+        }
+    }
+});
+
+function getVariable(obj, format) {
+	format = format.replace('PRICE', encValue(obj.value)).replace('CURRENCY', encValue(obj.currency)).replace('LANGUAGE', encValue(obj.language)).replace('COUNTRY', encValue(obj.country)).replace('VERSION', encValue(obj.version)).replace('TIER', encValue(obj.tier)).replace('COPYNOTE', encValue(obj.copynote)).replace('DESIGNNOTE', encValue(obj.designnote)).replace('CTA', encValue(obj.cta)).replace('PRICEPERIOD', encValue(obj.period));
+    return format;
+}
+
+function encValue(str) {
+    if (str == null || str == '')
+        return 'NULL';
+    	return str.trim().replace(/_|\s/g, '-'); //.replace(/\s/g, '-');
+}
+
+function passVariable() {
+    var convention = 'VERSION_CTA_DESIGNNOTE_COPYNOTE_PRICE_PRICEPERIOD_CURRENCY';
+    var strVariable = getVariable(variables, convention);
+    variables.noun = strVariable;
+    BannerFlow.raiseEvent('tracking_variable', strVariable);
+    
+}
+</script></body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- saved from url=(0132)https://57bca0c7bd8d3e0ab07a5b94.bannerflow.com/resources/custom-resource-7730ed31-e772-4a45-8fd7-dd7b63577c4a?cb=636081002195854950 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <title>Widget asset</title>  <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <style type="text/css"> html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video{margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; image-rendering: optimizeQuality;}/* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display: block;}body, html{background-color: transparent; overflow: hidden;}html{height: 100%; width: 100%;}body{line-height: 1; height: 100%; width: 100%;}ol, ul{list-style: none;}blockquote, q{quotes: none;}blockquote:before, blockquote:after, q:before, q:after{content: ''; content: none;}table{border-collapse: collapse; border-spacing: 0;}</style><script type="text/javascript" src="./widget.min.js.download"></script><style>div.btn{
+    width:100%;
+    height:100%;
+    display:none;
+    background-repeat:no-repeat;
+    background-size:17px 17px;
+    background-position:3px 3px;
+    cursor:pointer;
+}
+
+div.enabled{
+    display:block;
+}
+
+div.greenBG{
+    background-image:url(https://tbwa-ny-godaddy-live.bannerflow.com/resources/reloadgd-green-2ef64fcf-1b7e-48d3-8427-df333146d029.png);
+}
+
+div.whiteBG{
+    background-image:url(https://tbwa-ny-godaddy-live.bannerflow.com/resources/reloadgd-2491d94e-7c14-4616-bb6d-d2b0d6220205.png);
+}
+
+div.blackBG{
+    background-image:url(https://tbwa-ny-godaddy-live.bannerflow.com/resources/refresh-button-black-9b83ee71-21a3-43e1-a3f4-b2523df2827c.png);
+}
+
+
+div.transparentBG{
+    background-color:white;
+    opacity:0;
+}</style></head><body><div class="btn greenBG"></div><script>BannerFlow.addEventListener(BannerFlow.INIT, function () {
+    // Report to Sizmek HTML to pass through clicks to this widget
+    BannerFlow.raiseEvent('click_passthrough', JSON.stringify({
+        x: BannerFlow.x,
+        y: BannerFlow.y,
+        width: BannerFlow.getWidth(),
+        height: BannerFlow.getHeight()
+    }));
+    
+    //console.log('init');
+	loopCount = 0;
+    button = document.querySelector('.btn');
+    
+   switch(BannerFlow.settings.color){ 
+        case 'white':
+            button.classList.add('whiteBG');
+            break;
+        case 'green':
+            button.classList.add('greenBG');
+            break;
+        case 'black':
+            button.classList.add('blackBG');
+            break;
+       default:
+           button.classList.add('greenBG');
+            break;
+    }
+
+    
+   	document.body.addEventListener('click', function(){
+        BannerFlow.raiseEvent("RESTART");
+        BannerFlow.sendMessage("restartBanner");
+        loopCount = 0;
+        button.classList.remove('enabled');
+        loop();
+   });
+    
+    loop = function(){
+        loopCount++;
+        //console.log(loopCount + " " + BannerFlow.settings.loops);
+        if(loopCount >= BannerFlow.settings.loops){
+            button.classList.add('enabled'); 
+            //console.log('enable button');
+        }
+    }
+});
+
+BannerFlow.addEventListener(BannerFlow.LOOP, function () {
+    //console.log('loop');
+    loop();
+});
+
+/*
+BannerFlow.addEventListener('RESTART', function () {
+    // do something
+});
+*/
+</script></body></html>

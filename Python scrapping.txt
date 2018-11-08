@@ -1,0 +1,241 @@
+import urllib
+abc = urllib.urlopen("http://www.nayabiz.com/dir/A/AIR+CONDITIONERS")
+e = abc.read()
+print e
+***************************************************************
+
+import urllib
+import re
+reg = "<TD align='left' valign='top'>(.+?)</td>"
+pat = re.compile(reg)
+
+abc = urllib.urlopen("http://www.nayabiz.com/dir/query/?q=computers")
+e = abc.read()
+#print e
+td = re.findall(pat,e)
+print td
+
+*********************************************
+
+import urllib
+import re
+
+symbols = ['aapl', 'spy', 'MSFT', 'TXN', 'GOOG']
+#symfile = open("sym.txt")
+
+i=0
+while i<len(symbols):
+    url = ("http://finance.yahoo.com/q?s="+symbols[i]+"&ql=1")
+    htmlfile = urllib.urlopen(url)
+    htmltext = htmlfile.read()
+    regex = '<span class="Fw(b) D(ib) Fz(36px) Mb(-4px)" data-reactid=".k0uk3hv8d2.0.$0.0.0.3.1.$main-0-Quote-Proxy.$main-0-Quote.0.1.0.$price.0">'+symbols[i]+'">(.+?)</span>'
+    pattern = re.compile(regex)
+    price = re.findall(pattern,htmltext)
+    print price
+    i+=1
+
+
+*************************************************
+import urllib.request
+import time
+
+stockstoPull = 'AMD', 'BAC', 'MSFT', 'TXN', 'GOOG'
+
+def pullData(stock):
+    fileLine = stock + '.txt'
+    urltovisit = 'http://chartapi.finance.yahoo.com/instrument/1.0/'+stock+'/chartdata;type=quote;range=1y/csv'
+    with urllib.request.urlopen(urltovisit) as f:
+        sourceCode = f.read().decode('utf-8')
+    splitSource = sourceCode.split('\n')
+
+    for eachLine in splitSource:
+        splitLine = eachLine.split(',') # <---(here ',' instead of '.')
+        if len(splitLine) == 6: # <----( here, 6 instead of 5 )
+            if 'values' not in eachLine:
+                saveFile = open(fileLine,'a')
+                linetoWrite = eachLine+'\n'
+                saveFile.write(linetoWrite)
+
+    print('Pulled', stock)
+    print('...')
+    time.sleep(.5)
+
+if __name__=="__main__":
+    for eachStock in stockstoPull:     
+        pullData(eachStock)
+
+
+***************************************************************
+
+
+from nsetools import Nse
+from pprint import pprint
+nse = Nse()
+
+top_gainers = nse.get_top_gainers()
+pprint(top_gainers)
+top_losers = nse.get_top_losers()
+pprint(top_losers)
+
+
+*******************************
+
+from nsetools import Nse
+nse = Nse()
+print nse
+q = nse.get_quote('infy')
+from pprint import pprint
+pprint(q)
+
+
+--------------------------------
+
+all_stock_codes = nse.get_stock_codes()
+
+nifty_quote = nse.get_index_quote('cnx nifty') # code can be provided in upper|lower case.
+banknifty_quote = nse.get_index_quote('banknifty') # code can be provided in upper|lower case.
+pprint(nifty_quote)
+
+---------------------------------------
+
+Price Comparison Scrapping
+
+#http://www.pricetree.com/price-comparison-api.aspx
+
+import json
+import urllib
+
+results = json.load(urllib.urlopen("http://www.pricetree.com/dev/api.ashx?pricetreeId=11072&apikey=7770AD31-382F-4D32-8C36-3743C0271699"))
+print results
+
+----------------------------------------------------------------------------
+
+http://api.dataweave.in/v1/price_intelligence/findProduct/?api_key=b20a79e582ee4953ceccf41ac28aa08d&product=hp-laptop&page=1&per_page=10
+
+
+----------------------------------------------------------------------------
+
+pip search mws|grep Amazon
+
+---------------------------------
+#yahoo wheteher api scrapping YQL Console
+#http://woeid.rosselliot.co.nz/lookup/ulhasnagar
+#https://developer.yahoo.com/weather/?dataTypeRadios=JSON
+
+
+
+import urllib2, urllib, json
+baseurl = "https://query.yahooapis.com/v1/public/yql?"
+yql_query = "select wind from weather.forecast where woeid=2460286"
+yql_url = baseurl + urllib.urlencode({'q':yql_query}) + "&format=json"
+result = urllib2.urlopen(yql_url).read()
+data = json.loads(result)
+print data['query']['results']
+
+
+
+-------------------------------------------------------
+
+Twitter creds
+
+skyrider
+@skyridergyt
+gauravtalele*123
+gauravtalele@gmail.com
+
+------------------------------------------------------
+from TwitterAPI import TwitterAPI
+SEARCH_TERM = 'pendrive'
+
+CONSUMER_KEY = 'A0F7ath6BW1zAl3Tpg8YHHiPF'
+CONSUMER_SECRET = 'Ua2YJed9vo55Zr0wSLfXiFTD7nOnf6IvpLG1TFPexzuCsHcG1x'
+ACCESS_TOKEN_KEY = '3235720159-kYyjk5TbiB4BYjIgdRwiEmLM2NzZvqXL3UjsKuj'
+ACCESS_TOKEN_SECRET = 'HtAD0ZNIJCe850y2KcUESMtfM8hrtQYSbwJZm6dI8ROGp'
+
+
+api = TwitterAPI(CONSUMER_KEY,
+                 CONSUMER_SECRET,
+                 ACCESS_TOKEN_KEY,
+                 ACCESS_TOKEN_SECRET)
+
+r = api.request('search/tweets', {'q': SEARCH_TERM})
+
+for item in r:
+    print(item['text'] if 'text' in item else item)
+
+#print('\nQUOTA: %s' % r.get_rest_quota())
+
+
+------------------------------------------------------
+
+
+from tweepy import Stream
+from tweepy import OAuthHandler
+from tweepy.streaming import StreamListener
+from pprint import pprint
+
+#consumer key, consumer secret, access token, access secret.
+ckey="A0F7ath6BW1zAl3Tpg8YHHiPF"
+csecret="Ua2YJed9vo55Zr0wSLfXiFTD7nOnf6IvpLG1TFPexzuCsHcG1x"
+atoken="3235720159-kYyjk5TbiB4BYjIgdRwiEmLM2NzZvqXL3UjsKuj"
+asecret="HtAD0ZNIJCe850y2KcUESMtfM8hrtQYSbwJZm6dI8ROGp"
+
+class listener(StreamListener):
+
+    def on_data(self, data):
+        pprint(data)
+        return(True)
+
+    def on_error(self, status):
+        print status
+
+auth = OAuthHandler(ckey, csecret)
+auth.set_access_token(atoken, asecret)
+
+twitterStream = Stream(auth, listener())
+twitterStream.filter(track=["car"])
+
+
+-------------------------------------------------------------------
+"current_user_url": "https://api.github.com/user",
+  "current_user_authorizations_html_url": "https://github.com/settings/connections/applications{/client_id}",
+  "authorizations_url": "https://api.github.com/authorizations",
+  "code_search_url": "https://api.github.com/search/code?q={query}{&page,per_page,sort,order}",
+  "emails_url": "https://api.github.com/user/emails",
+  "emojis_url": "https://api.github.com/emojis",
+  "events_url": "https://api.github.com/events",
+  "feeds_url": "https://api.github.com/feeds",
+  "followers_url": "https://api.github.com/user/followers",
+  "following_url": "https://api.github.com/user/following{/target}",
+  "gists_url": "https://api.github.com/gists{/gist_id}",
+  "hub_url": "https://api.github.com/hub",
+  "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}",
+  "issues_url": "https://api.github.com/issues",
+  "keys_url": "https://api.github.com/user/keys",
+  "notifications_url": "https://api.github.com/notifications",
+  "organization_repositories_url": "https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}",
+  "organization_url": "https://api.github.com/orgs/{org}",
+  "public_gists_url": "https://api.github.com/gists/public",
+  "rate_limit_url": "https://api.github.com/rate_limit",
+  "repository_url": "https://api.github.com/repos/{owner}/{repo}",
+  "repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}",
+  "current_user_repositories_url": "https://api.github.com/user/repos{?type,page,per_page,sort}",
+  "starred_url": "https://api.github.com/user/starred{/owner}{/repo}",
+  "starred_gists_url": "https://api.github.com/gists/starred",
+  "team_url": "https://api.github.com/teams",
+  "user_url": "https://api.github.com/users/{user}",
+  "user_organizations_url": "https://api.github.com/user/orgs",
+  "user_repositories_url": "https://api.github.com/users/{user}/repos{?type,page,per_page,sort}",
+  "user_search_url": "https://api.github.com/search/users?q={query}{&page,per_page,sort,order}
+
+
+-------------------------------------------------------------------
+https://github.com/lorien/awesome-web-scraping/blob/master/python.md
+https://python-twitter.readthedocs.io
+-----------------------------------------
+while True:
+    time.sleep(5)
+
+#infinite loop
+
+----------------------------------------

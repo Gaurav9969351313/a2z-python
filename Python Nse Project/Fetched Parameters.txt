@@ -1,0 +1,56 @@
+'adhocMargin': None,
+'applicableMargin': 12.5,
+'averagePrice': 1021.75,
+'change': 9.95,
+ 
+'cm_adj_high_dt': '03-JUN-16',
+'cm_adj_low_dt': '09-NOV-16',
+'cm_ffm': 204200.56,
+ 
+'css_status_desc': 'Listed',
+
+'deliveryQuantity': 1545603.0,
+'deliveryToTradedQuantity': 67.93,
+'exDate': '21-OCT-16',
+'extremeLossMargin': 5.0,
+'faceValue': 5.0,
+'high52': 1279.3,
+'isinCode': 'INE009A01021',
+'lastPrice': 1021.5,
+'low52': 901.0,
+'marketType': 'N',
+
+ 
+ 
+'priceBand': 'No Band',
+'pricebandlower': 910.4,
+'pricebandupper': 1112.7,
+'quantityTraded': 2275162.0,
+'recordDate': '24-OCT-16',
+'secDate': '10MAR2017',
+'securityVar': 4.32,
+'sellPrice1': 1021.85,
+
+'totalBuyQuantity': None,
+'totalSellQuantity': 1072.0,
+'totalTradedValue': 23246.47,
+'totalTradedVolume': 2275162.0,
+'varMargin': 7.5
+
+
+'companyName': 'Infosys Limited',
+'lastPrice': 1021.5,
+'pChange': 0.98,
+'change': 9.95,
+'dayHigh': 1027.65,
+'dayLow': 1013.4,
+'high52': 1279.3,
+'low52': 901.0,
+'series': 'EQ',
+'open': 1015.0,
+'closePrice': 1021.85,
+'previousClose': 1011.55,
+
+
+
+
